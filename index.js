@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const db = require("./Db");
 const Course = require("./check");
 app.use(
   cors({
@@ -32,10 +33,27 @@ const data = [
 app.get("/check", (req, res) => {
   res.send(data);
 });
-app.post("/ps", (req, res) => {
-  Course.create({
-    courseName: "suman",
-  });
+// console.log(connect());
+db.connect();
+app.post("/ps", async (req, res) => {
+  try {
+    var name = req.body.name;
+    console.log(req.body.name);
+    const c = await Course.create({
+      courseName: name,
+    });
+    if (c) {
+      return res.status(200).json({
+        success: false,
+        message: "All Fields are Mandatory",
+      });
+    }
+  } catch (err) {
+    return res.status(400).json({
+      success: false,
+      message: "All Fields are Mandatory",
+    });
+  }
 });
 app.listen(process.env.PORT, (req, res) => {
   console.log(`app is listening on port no ${process.env.PORT}`);
