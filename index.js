@@ -33,6 +33,9 @@ const data = [
 app.get("/check", (req, res) => {
   res.send(data);
 });
+app.get("/check/check", (req, res) => {
+  res.send("hello new data send sucessfully");
+});
 // console.log(connect());
 db.connect();
 app.post("/ps", async (req, res) => {
